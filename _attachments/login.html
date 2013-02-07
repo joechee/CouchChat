@@ -1,0 +1,136 @@
+<html>
+<head>
+  <title>Couchdb login and post message</title>
+  <link type="text/css" rel="stylesheet" href="./css/message.css"></link>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <script type="text/javascript" src="./js/underscore.js"></script>
+  <script type="text/javascript" src="./js/backbone.js"></script>
+  <script type="text/javascript" src="./js/crypto/sha1.js"></script>
+  <script type="text/javascript" src="./js/couchapp.js"></script>
+  <script type="text/javascript" src="./js/reliable.js"></script>
+  <script type="text/javascript" src="./js/models.js"></script>
+  <script type="text/javascript" src="./js/sketch.js"></script>
+  <script>
+    $(function () {
+      var db = new CouchDB();
+      app = {};
+      app.db = db;
+
+      // Disable login button
+      db.getCurrentUser(function (res) {
+        app.user = res.userCtx;
+        if (app.user.name) {
+          loginSuccess();
+        }
+      });
+
+      function loginSuccess(res) {
+        app.room = 'global';
+        app = new App(app);
+
+        hideOverlay();
+        $('.room-widget .room-name').val('global');
+        $(".room-widget .change-room").click();
+      }
+
+      function loginError(err) {
+        var err = JSON.parse(err.responseText);
+        if (err.error == "unauthorized" || err.error == "forbidden") {
+          alert('Password is incorrect and username has been taken!');
+        }
+      }
+      $('#login').click(function () {
+        var username = $('.username').val();
+        var password = $('.password').val();
+
+        db.createUser(
+          username,
+          password,
+          function (res) {
+            db.login(username, password, loginSuccess, loginError);
+          },
+          function (err) {
+            var err = JSON.parse(err.responseText);
+            if (err.error == "conflict") {
+              console.log(err);
+              db.login(username, password, loginSuccess, loginError);
+            }
+          }
+        );
+      });
+
+      $(".room-widget .change-room").on('click', function () {
+        app.changeRoom($('.room-name').val());
+        $(this).attr('disabled', true);
+        app.messages.push({
+          _id: Math.random(),
+          message: "You have joined room: " + $('.room-name').val(),
+          username: "admin"
+        });
+      });
+
+      $(".room-widget .room-name").on('change keyup', function () {
+        $(".room-widget .change-room").removeAttr('disabled');
+      });
+
+      $('.message-app').bind('mouseup', function () {
+        var selection = window.getSelection();
+        if (selection.rangeCount == 1) {
+          var rangeObject = selection.getRangeAt(0);
+          if (rangeObject.startContainer == rangeObject.endContainer 
+            && rangeObject.startOffset == rangeObject.endOffset) {
+            $('.edit-message').focus();
+          }
+        }
+      });
+
+
+      function hideOverlay() {
+        $('.overlay').hide();
+        $('.login-widget').hide();
+      }
+
+    });
+  </script>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="header">
+    <div class="header-content">
+      <div class="app-name">
+        Messaging app
+      </div>
+    </div>
+    <div>
+      <button class="logout">Logout</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="widgets">
+      <div class="login-widget">
+        <div class="contents">
+          <div class="login-text">Login</div>
+          <input class="username" placeholder="username">
+          <input type="password" class="password" placeholder="password">
+          <button id="login">Login</button>
+        </div>
+      </div>
+      <div class="room-widget">
+        <span>Room:</span>
+        <input class="room-name" placeholder="Room name"></input>
+        <button class="change-room">Change room</button>
+      </div>
+      <div class="message-app">
+        <div class="messages">
+        </div>
+        <div class="message-form" target="_blank">
+          <input class="edit-message" placeholder="Enter message here">
+          <button class="send">Send</button>
+        </div>
+      </div>
+    </div>
+    <div class="users">
+    </div>
+  </div>
+
+</body>

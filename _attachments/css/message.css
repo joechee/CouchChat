@@ -1,0 +1,152 @@
+body {
+  padding:0;
+  margin: 0;
+  min-width: 200px;
+}
+
+div, form {
+  padding:0;
+  margin: 0;
+}
+
+.header {
+  padding-left: 10px;
+  background: #000;
+  color: #FFF;
+  height: 30px;
+}
+
+.header-content {
+  width: 1000px;
+}
+
+.app-name {
+  float:left;
+  line-height: 30px;
+}
+
+.container {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.logout {
+  float:right;
+}
+
+.message-line {
+  width: 100%;
+  clear: both;
+}
+
+.message-line .message {
+  float: left;
+  padding-left: 3px;
+}
+
+.message-line .author {
+  float: left;
+}
+
+.message-form {
+  clear:both;
+  width: 100%;
+}
+
+.send {
+  width: 10%;
+}
+
+.room-widget {
+  width: 1000px;
+  margin: 0 auto;
+  background: #ADD8E6;
+}
+
+.message-app .message-form input {
+  width: 89%;
+}
+
+.message-app .messages{
+  float:left;
+  width:80%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #EEE;
+  min-height: 600px;
+}
+
+.message-app .message-form{
+  position: fixed;
+  width: 1000px;
+  margin-left: -500px;
+  bottom: 0;
+  left: 50%;
+  background: #FFFFCC;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+
+.overlay {
+  z-index: 1;
+  opacity: 0.5;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* Login box styling */
+
+.login-widget {
+  z-index: 2;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  width: 200px;
+  height: 250px;
+  margin-left: -100px;
+  margin-top: -100px;
+  left: 50%;
+  top: 40%;
+  position: fixed;
+  background: #111;
+  text-align: center;
+  color: #EEE;
+}
+
+.contents {
+  position:relative;
+}
+
+.login-widget .username {
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+}
+
+.login-widget .password {
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-widget button {
+  clear:both;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 80px;
+  padding: 20px;
+}
+
+.login-widget .login-text{
+  height: 50px;
+  line-height: 50px;
+}
+
+
+
