@@ -81,13 +81,14 @@
     }, interval);
   };
 
+  var oldDate = Date;
+
   db.prototype.sync = function (cb) {
     var self = this;
     $.ajax({
       type: 'GET',
       url: self.url + '_design/'+ self.dbName + '/_show/now',
       success: function (res) {
-        var oldDate = Date;
         lag = (new Date()).getTime() - parseInt(res,10);
         Date = function () {
           var returnDate = new oldDate();

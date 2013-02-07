@@ -44,6 +44,10 @@ var App = Backbone.Router.extend({
         });
       });
 
+      setInterval(function () {
+        self.db.sync();
+      }, 10000);
+
       // Tell everyone that you are in the house
       self.db.heartbeat(10000, opts.room);
     });
